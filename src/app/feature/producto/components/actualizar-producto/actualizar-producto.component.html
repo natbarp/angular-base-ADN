@@ -1,0 +1,80 @@
+<h1>Actualizar agenda previamente hecha</h1>
+<div class="row">
+  <div class="col-sm-2">
+    <h2>Solicitud</h2>
+    <form [formGroup]="productoForm" (ngSubmit)="actualizar()" #myForm="ngForm">
+      <div class="row">
+        <div class="col-sm-2">
+          <label>id:</label>
+        </div>
+        <div class="col-sm-4">
+          <input validar type="text" id="id" name="id" placeholder="id" class="form-control"
+            formControlName="id">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label>Nombre Propietario:</label>
+        </div>
+        <div class="col-sm-4">
+          <input validar type="text" id="nombrePropietario" name="nombrePropietario" placeholder="Nombre Propietario" class="form-control"
+            formControlName="nombrePropietario">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label>Id Propietario:</label>
+        </div>
+        <div class="col-sm-4">
+          <input validar type="number" id="idPropietario" name="idPropietario" placeholder="Id Propietario"
+            class="form-control" formControlName="idPropietario">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label>Tipo de animal:</label>
+        </div>
+        <div class="col-sm-4">
+          <select validar name="tipoAnimal" id="tipoAnimal" class="form-control" formControlName="tipoAnimal">
+            <option value="PERRO">PERRO</option>
+            <option value="GATO">GATO</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label>Fecha de ingreso:</label>
+        </div>
+        <div class="col-sm-4">
+          <input validar type="date" id="fechaIngreso" name="fechaIngreso" placeholder="Fecha ingreso"
+            class="form-control" formControlName="fechaIngreso">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label>Días de estadía:</label>
+        </div>
+        <div class="col-sm-4">
+          <input validar type="number" id="diasEstadia" name="diasEstadia" placeholder="Fecha ingreso"
+            class="form-control" formControlName="diasEstadia">
+        </div>
+      </div>
+      <br>
+      <button [disabled]="myForm.invalid" type="submit">Agendar</button>
+    </form>
+  </div>
+
+  <div class="col-sm-2" *ngIf="esVisible == true">
+    <h2>Facturación</h2>
+    <p>Descuento: {{(factura.valor.descuento)?'SI':'NO'}}</p>
+    <p>Estadía: {{factura.valor.diasEstadia}} días</p>
+    <p>Valor día regular: ${{factura.valor.valorDiaRegular}}</p>
+    <p>Valor día FDS: ${{factura.valor.valorDiaFDS}}</p>
+    <p>Total: ${{factura.valor.valorFacturado}}</p>
+  </div>
+</div>

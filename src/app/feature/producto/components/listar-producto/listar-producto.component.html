@@ -1,0 +1,95 @@
+<script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
+<p>Listado registros de guardería</p>
+<div class="container ps-5 pe-5">
+  <table id="tableRegistrosGuarderia" class="table table-responsive text-center">
+    <thead class="table-dark">
+        <tr >
+            <th>#</th>
+            <th>Nombre propietario</th>
+            <th>Documento</th>
+            <th>Tipo animal</th>
+            <th>Fecha ingreso</th>
+            <th>Dias de estadía</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody id="cuerpoTabla">
+        <tr *ngFor="let item of listaProductos | async">
+            <th>{{item.id}}</th>
+            <th>{{item.nombrePropietario}}</th>
+            <th>{{item.idPropietario}}</th>
+            <th>{{item.tipoAnimal}}</th>
+            <th>{{item.fechaIngreso}}</th>
+            <th>{{item.diasEstadia}}</th>
+            <th>
+              <button type="button" class="btn btn-warning m-1" (click)="actualizar(this.item)">Editar</button>
+              <button type="button" class="btn btn-danger" (click)="borrar(this.item.id)">Borrar</button>
+            </th>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div *ngIf="esVisible" class="modal" tabindex="-1" >
+  <div class="modal-dialog p-3">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualización de agenda</h5>
+        <button type="button" class="btn-close" (click)="visibilidadModal()" ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="productoForm" #myForm="ngForm" (ngSubmit)="guardarActualizacion()">
+
+          <div class="form-floating mb-3">
+            <input validar type="text" id="id" name="id" class="form-control"
+              formControlName="id" placeholder="id" [(ngModel)]="this.registro.id">
+            <label for="id">id</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input validar type="text" id="nombrePropietario" name="nombrePropietario" class="form-control"
+              formControlName="nombrePropietario" placeholder="Nombre Propietario" [(ngModel)]="this.registro.nombrePropietario">
+            <label for="nombrePropietario">Nombre Propietario</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input validar type="number" id="idPropietario" name="idPropietario" placeholder="Id Propietario"
+                class="form-control" formControlName="idPropietario" [(ngModel)]="this.registro.idPropietario">
+            <label for="idPropietario">Id Propietario</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <select validar name="tipoAnimal" id="tipoAnimal" class="form-control"
+              formControlName="tipoAnimal" placeholder="Tipo de animal" [(ngModel)]="this.registro.tipoAnimal">
+              <option value="PERRO">PERRO</option>
+              <option value="GATO">GATO</option>
+            </select>
+            <label for="tipoAnimal">Tipo de animal</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input validar type="date" id="fechaIngreso" name="fechaIngreso" placeholder="Fecha ingreso"
+                class="form-control" formControlName="fechaIngreso" [(ngModel)]="this.registro.fechaIngreso">
+            <label>Fecha de ingreso</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input validar type="number" id="diasEstadia" name="diasEstadia" placeholder="Fecha ingreso"
+                class="form-control" formControlName="diasEstadia" [(ngModel)]="this.registro.diasEstadia">
+            <label>Días de estadía</label>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="visibilidadModal()">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,20 @@
+<p>borrar-producto works!</p>
+
+<form [formGroup]="productoForm" (ngSubmit)="borrar()" #myForm="ngForm">
+
+  <div class="row">
+    <div class="col-sm-2">
+      <label>id de registro:</label>
+    </div>
+    <div class="col-sm-4">
+      <input validar type="number" id="id" name="id" placeholder="id" class="form-control"
+        formControlName="id">
+    </div>
+  </div>
+  <br>
+  <button [disabled]="myForm.invalid" type="submit">Borrar registro</button>
+</form>
+
+<div class="col-sm-2" *ngIf="esVisible == true">
+  <h2>{{mensajeRespuesta}}</h2>
+</div>
