@@ -5,15 +5,18 @@ import { ListarProductoComponent } from './listar-producto.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ProductoService } from '../../shared/service/producto.service';
-import { Producto } from '../../shared/model/producto';
+import { GuarderiaService } from '../../shared/service/guarderia.service';
+import { Solicitud } from '../../shared/model/producto';
 import { HttpService } from 'src/app/core/services/http.service';
 
 describe('ListarProductoComponent', () => {
   let component: ListarProductoComponent;
   let fixture: ComponentFixture<ListarProductoComponent>;
-  let productoService: ProductoService;
-  const listaProductos: Producto[] = [new Producto('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7'), new Producto('2', 'Test2', '12345678', 'PERRO', '2022-03-03 17:00:00', '7')];
+  let guarderiaService: GuarderiaService;
+  const listaProductos: Solicitud[] = [
+              new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7'),
+              new Solicitud('2', 'Test2', '12345678', 'PERRO', '2022-03-03 17:00:00', '7')
+            ];
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -23,7 +26,7 @@ describe('ListarProductoComponent', () => {
         HttpClientModule,
         RouterTestingModule
       ],
-      providers: [ProductoService, HttpService]
+      providers: [guarderiaService, HttpService]
     })
       .compileComponents();
   }));
@@ -31,8 +34,8 @@ describe('ListarProductoComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ListarProductoComponent);
     component = fixture.componentInstance;
-    productoService = TestBed.inject(ProductoService);
-    spyOn(productoService, 'consultar').and.returnValue(
+    guarderiaService = TestBed.inject(GuarderiaService);
+    spyOn(guarderiaService, 'consultar').and.returnValue(
       of(listaProductos)
     );
     fixture.detectChanges();

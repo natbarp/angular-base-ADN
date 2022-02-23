@@ -1,4 +1,4 @@
-export class Producto {
+export class Solicitud {
     id: string;
     nombrePropietario: string;
     idPropietario: string;

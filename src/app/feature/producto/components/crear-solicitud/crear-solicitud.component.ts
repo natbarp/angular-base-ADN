@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductoService } from '../../shared/service/producto.service';
+import { GuarderiaService } from '../../shared/service/guarderia.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Factura } from '@producto/shared/model/factura';
 // import { Observable } from 'rxjs';
@@ -10,27 +10,27 @@ import { Factura } from '@producto/shared/model/factura';
 const NUMERO_MÁXIMO = 9999999999;
 
 @Component({
-  selector: 'app-crear-producto',
-  templateUrl: './crear-producto.component.html',
-  styleUrls: ['./crear-producto.component.scss']
+  selector: 'app-crear-solicitud',
+  templateUrl: './crear-solicitud.component.html',
+  styleUrls: ['./crear-solicitud.component.scss']
 })
-export class CrearProductoComponent implements OnInit {
-  productoForm: FormGroup;
+export class CrearSolicitudComponent implements OnInit {
+  solicitudForm: FormGroup;
   // factura: Observable<Factura>;
   factura: Factura;
   mostrarModal: Boolean = false;
   mostrarContenidoModal: Boolean = false;
   mensajeError: String;
 
-  constructor(protected productoServices: ProductoService) { }
+  constructor(protected guarderiaService: GuarderiaService) { }
 
   ngOnInit() {
     this.construirFormularioProducto();
   }
 
   crear() {
-    console.log(this.productoForm.value);
-    this.productoServices.guardar(this.productoForm.value).subscribe(
+    console.log(this.solicitudForm.value);
+    this.guarderiaService.guardar(this.solicitudForm.value).subscribe(
       data => {
         this.factura = data;
         // this.factura.pipe(map((valor)=>{return valor})) = data;
@@ -55,7 +55,7 @@ export class CrearProductoComponent implements OnInit {
   }
 
   public construirFormularioProducto() {
-    this.productoForm = new FormGroup({
+    this.solicitudForm = new FormGroup({
       nombrePropietario: new FormControl('', [Validators.required]),
       idPropietario: new FormControl('', [Validators.required, Validators.max(NUMERO_MÁXIMO)]),
       tipoAnimal: new FormControl('', [Validators.required]),

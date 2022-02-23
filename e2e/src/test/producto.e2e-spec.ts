@@ -1,29 +1,29 @@
 // import { browser } from 'protractor';
 import { NavbarPage } from '../page/navbar/navbar.po';
 import { AppPage } from '../app.po';
-import { ProductoPage } from '../page/producto/producto.po';
+import { GuarderiaPage } from '../page/guarderia/guarderia.po';
 
 describe('workspace-project Producto', () => {
     let page: AppPage;
     let navBar: NavbarPage;
-    let producto: ProductoPage;
+    let guarderia: GuarderiaPage;
     var registrosIniciales: number;
 
     beforeEach(() => {
         page = new AppPage();
         navBar = new NavbarPage();
-        producto = new ProductoPage();
+        guarderia = new GuarderiaPage();
     });
 
     it('Deberia listar, contar y validar existencia de registros', () => {
       page.navigateTo();
-      navBar.clickBotonProductos();
-      producto.clickBotonListarProductos();
-      producto.contarProductos().then((cantidad)=>{
+      navBar.clickBotonGuarderia();
+      guarderia.clickBotonListarSolicitud();
+      guarderia.contarProductos().then((cantidad)=>{
         registrosIniciales = cantidad.valueOf();
         console.log(registrosIniciales);
       })
-      expect(producto.contarProductos()).toBe(producto.contarProductos());
+      expect(guarderia.contarProductos()).toBe(guarderia.contarProductos());
     });
 
     it('Deberia crear producto y ejecutar un modal con información del servidor', () => {
@@ -37,30 +37,30 @@ describe('workspace-project Producto', () => {
         const DIAS_ESTADIA = '7';
 
         page.navigateTo();
-        navBar.clickBotonProductos();
-        producto.clickBotonCrearProductos();
-        producto.ingresarNombrePropietario(NOMBRE_PROPIETARIO);
-        producto.ingresarIdPropietario(ID_PROPIETARIO);
-        producto.ingresarTipoAnimal(TIPO_ANIMAL);
-        producto.ingresarFechaIngreso(FECHA_INGRESO);
-        producto.ingresarDiasEstadia(DIAS_ESTADIA);
-        producto.crear();
+        navBar.clickBotonGuarderia();
+        guarderia.clickBotonCrearSolicitud();
+        guarderia.ingresarNombrePropietario(NOMBRE_PROPIETARIO);
+        guarderia.ingresarIdPropietario(ID_PROPIETARIO);
+        guarderia.ingresarTipoAnimal(TIPO_ANIMAL);
+        guarderia.ingresarFechaIngreso(FECHA_INGRESO);
+        guarderia.ingresarDiasEstadia(DIAS_ESTADIA);
+        guarderia.crear();
         // Adicionamos las validaciones despues de la creación
         // expect(<>).toEqual(<>);
     });
 
     it('Deberia listar e indicar registro = registrosIniciales + 1 ', () => {
       page.navigateTo();
-      navBar.clickBotonProductos();
-      producto.clickBotonListarProductos();
-      expect(producto.contarProductos()).toBe(registrosIniciales+1);
+      navBar.clickBotonGuarderia();
+      guarderia.clickBotonListarSolicitud();
+      expect(guarderia.contarProductos()).toBe(registrosIniciales+1);
     });
 
     it('Deberia borrar un item y retirarse de la lista de registros', () => {
       page.navigateTo();
-      navBar.clickBotonProductos();
-      producto.clickBotonListarProductos();
-      producto.borrar();
+      navBar.clickBotonGuarderia();
+      guarderia.clickBotonListarSolicitud();
+      guarderia.borrar();
     });
 
     it('Deberia actualizar un item y retornar datos de facturación', () => {
@@ -69,11 +69,11 @@ describe('workspace-project Producto', () => {
       const ID_PROPIETARIO = Math.floor(Math.random()*(MAX - MIN) + MIN);
 
       page.navigateTo();
-      navBar.clickBotonProductos();
-      producto.clickBotonListarProductos();
-      producto.ejecutarActualizacion();
-      producto.ingresarIdPropietario(ID_PROPIETARIO);
-      producto.actualizar();
+      navBar.clickBotonGuarderia();
+      guarderia.clickBotonListarSolicitud();
+      guarderia.ejecutarActualizacion();
+      guarderia.ingresarIdPropietario(ID_PROPIETARIO);
+      guarderia.actualizar();
 
     });
 

@@ -2,47 +2,47 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ProductoService } from '@producto/shared/service/producto.service';
-import { Producto } from '@producto/shared/model/producto';
+import { GuarderiaService } from '@producto/shared/service/guarderia.service';
+import { Solicitud } from '@producto/shared/model/solicitud';
 import { Factura } from '@producto/shared/model/factura';
 
 const NUMERO_MÁXIMO = 9999999999;
 
 @Component({
-  selector: 'app-listar-producto',
-  templateUrl: './listar-producto.component.html',
-  styleUrls: ['./listar-producto.component.scss']
+  selector: 'app-listar-solicitud',
+  templateUrl: './listar-solicitud.component.html',
+  styleUrls: ['./listar-solicitud.component.scss']
 })
 export class ListarProductoComponent implements OnInit {
-  public listaProductos: Observable<Producto[]>;
+  public listaProductos: Observable<Solicitud[]>;
   public respuestaBorrado: Observable<Boolean>;
   esVisible: Boolean = false;
   mostrarContenidoModal: Boolean = false;
   mensajeRespuesta: String;
   datosRecibidos: any;
-  productoForm: FormGroup;
+  solicitudForm: FormGroup;
   registroSeleccionado: number;
-  registro: Producto;
+  registro: Solicitud;
   factura: Factura;
 
-  constructor(protected productoService: ProductoService) {}
+  constructor(protected guarderiaService: GuarderiaService) {}
 
   ngOnInit() {
-    this.listaProductos = this.productoService.consultar();
+    this.listaProductos = this.guarderiaService.consultar();
     this.construirFormularioProducto();
   }
 
   borrar(id: number) {
     var confirmar = confirm("Seguro que desea eliminar el resgistro No." + id);
     if (confirmar == true) {
-      this.productoService.eliminar(id)
+      this.guarderiaService.eliminar(id)
         .subscribe(
           (successData) => {
             this.datosRecibidos = successData;
             console.log("----status----");
             console.log(successData);
             this.mostrarData(this.datosRecibidos);
-            this.listaProductos = this.productoService.consultar();
+            this.listaProductos = this.guarderiaService.consultar();
             return successData;
         },
           (error) => {
@@ -64,7 +64,7 @@ export class ListarProductoComponent implements OnInit {
     }
   }
 
-  actualizar(producto: Producto){
+  actualizar(producto: Solicitud){
     this.visibilidadModal();
     this.visibilidadContenidoModal();
     this.registroSeleccionado = +producto.id; //convierte string en numerico
@@ -75,9 +75,9 @@ export class ListarProductoComponent implements OnInit {
 
   guardarActualizacion(){
     console.log("----Datos a actualizar----");
-    this.productoForm.value.id = this.registro.id;
-    console.log(this.productoForm.value);
-    this.productoService.actualizar(this.productoForm.value).subscribe(data => {
+    this.solicitudForm.value.id = this.registro.id;
+    console.log(this.solicitudForm.value);
+    this.guarderiaService.actualizar(this.solicitudForm.value).subscribe(data => {
       this.factura = data;
 
       return data;
@@ -88,7 +88,7 @@ export class ListarProductoComponent implements OnInit {
   visibilidadModal(){
     this.esVisible = !this.esVisible;
     if(this.esVisible){
-        this.productoForm.controls['id'].disable();
+        this.solicitudForm.controls['id'].disable();
     }
   }
 
@@ -97,7 +97,7 @@ export class ListarProductoComponent implements OnInit {
   }
 
   private construirFormularioProducto() {
-    this.productoForm = new FormGroup({
+    this.solicitudForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombrePropietario: new FormControl('', [Validators.required]),
       idPropietario: new FormControl('', [Validators.required, Validators.max(NUMERO_MÁXIMO)]),

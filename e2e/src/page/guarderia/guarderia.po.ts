@@ -1,8 +1,8 @@
 import {browser, by, element, protractor} from 'protractor';
 
-export class ProductoPage {
-  private linkCrearProducto = element(by.id('linkCrearProducto'));
-  private linkListarProductos = element(by.id('linkListarProducto'));
+export class GuarderiaPage {
+  private linkCrearSolicitud = element(by.id('linkCrearProducto'));
+  private linkListarSolicitud = element(by.id('linkListarProducto'));
 
   private inputNombrePropietario = element(by.id('nombrePropietario'));
   private inputIdPropietario = element(by.id('idPropietario'));
@@ -12,12 +12,12 @@ export class ProductoPage {
 
   private listaProductos = element.all(by.css('table.table.table-responsive.text-center tbody tr'));
 
-  async clickBotonCrearProductos() {
-      await this.linkCrearProducto.click();
+  async clickBotonCrearSolicitud() {
+      await this.linkCrearSolicitud.click();
   }
 
-  async clickBotonListarProductos() {
-      await this.linkListarProductos.click();
+  async clickBotonListarSolicitud() {
+      await this.linkListarSolicitud.click();
   }
 
   async crear() {

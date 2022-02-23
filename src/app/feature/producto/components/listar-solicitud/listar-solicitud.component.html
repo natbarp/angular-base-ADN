@@ -41,7 +41,7 @@
       </div>
       <div class="modal-body">
         <div *ngIf="mostrarContenidoModal" id="formActualizar">
-          <form [formGroup]="productoForm" #myForm="ngForm" (ngSubmit)="guardarActualizacion()">
+          <form [formGroup]="solicitudForm" #myForm="ngForm" (ngSubmit)="guardarActualizacion()">
             <div class="form-floating mb-3">
               <input validar type="text" id="id" name="id" class="form-control"
                 formControlName="id" placeholder="id" [(ngModel)]="this.registro.id">
