@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../shared/service/producto.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Factura } from '@producto/shared/model/factura';
+// import { Observable } from 'rxjs';
+// import { map } from 'rxjs/operators';
 
 // const LONGITUD_MINIMA_PERMITIDA_TEXTO = 3;
 // const LONGITUD_MAXIMA_PERMITIDA_TEXTO = 20;
@@ -14,8 +16,11 @@ const NUMERO_MÁXIMO = 9999999999;
 })
 export class CrearProductoComponent implements OnInit {
   productoForm: FormGroup;
+  // factura: Observable<Factura>;
   factura: Factura;
-  esVisible: Boolean = false;
+  mostrarModal: Boolean = false;
+  mostrarContenidoModal: Boolean = false;
+  mensajeError: String;
 
   constructor(protected productoServices: ProductoService) { }
 
@@ -25,20 +30,31 @@ export class CrearProductoComponent implements OnInit {
 
   crear() {
     console.log(this.productoForm.value);
-    this.productoServices.guardar(this.productoForm.value).subscribe(data => {
-      this.factura = data;
-      this.mostrarData(this.factura);
-      return data;
-    });
+    this.productoServices.guardar(this.productoForm.value).subscribe(
+      data => {
+        this.factura = data;
+        // this.factura.pipe(map((valor)=>{return valor})) = data;
+        this.visibilidadModal(null);
+      },
+      error => {
+        this.visibilidadModal(error.error.mensaje);
+      }
+      );
   }
 
-  mostrarData(respuesta: Factura){
-    this.esVisible = true;
-    console.log("Respuesta POST:")
-    console.log(respuesta);
+  visibilidadModal(respuesta: any){
+    this.mostrarModal = !this.mostrarModal;
+    if(respuesta==null){
+      this.mostrarContenidoModal = true;
+    }
+    else{
+      this.mostrarContenidoModal = false;
+      this.mensajeError = respuesta;
+    }
+
   }
 
-  private construirFormularioProducto() {
+  public construirFormularioProducto() {
     this.productoForm = new FormGroup({
       nombrePropietario: new FormControl('', [Validators.required]),
       idPropietario: new FormControl('', [Validators.required, Validators.max(NUMERO_MÁXIMO)]),

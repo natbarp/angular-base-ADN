@@ -15,7 +15,9 @@ const NUMERO_MÁXIMO = 9999999999;
 })
 export class ListarProductoComponent implements OnInit {
   public listaProductos: Observable<Producto[]>;
+  public respuestaBorrado: Observable<Boolean>;
   esVisible: Boolean = false;
+  mostrarContenidoModal: Boolean = false;
   mensajeRespuesta: String;
   datosRecibidos: any;
   productoForm: FormGroup;
@@ -30,22 +32,24 @@ export class ListarProductoComponent implements OnInit {
     this.construirFormularioProducto();
   }
 
-  borrar(id) {
+  borrar(id: number) {
     var confirmar = confirm("Seguro que desea eliminar el resgistro No." + id);
     if (confirmar == true) {
       this.productoService.eliminar(id)
         .subscribe(
           (successData) => {
             this.datosRecibidos = successData;
+            console.log("----status----");
+            console.log(successData);
             this.mostrarData(this.datosRecibidos);
             this.listaProductos = this.productoService.consultar();
             return successData;
         },
           (error) => {
             this.mostrarData(error.error.mensaje);
-            this.listaProductos = this.productoService.consultar();
           }
       );
+
     }
   }
 
@@ -62,6 +66,7 @@ export class ListarProductoComponent implements OnInit {
 
   actualizar(producto: Producto){
     this.visibilidadModal();
+    this.visibilidadContenidoModal();
     this.registroSeleccionado = +producto.id; //convierte string en numerico
     this.registro = producto;
     let division = this.registro.fechaIngreso.split(" ");
@@ -74,10 +79,10 @@ export class ListarProductoComponent implements OnInit {
     console.log(this.productoForm.value);
     this.productoService.actualizar(this.productoForm.value).subscribe(data => {
       this.factura = data;
-      this.mostrarData(this.factura);
+
       return data;
     });
-    this.visibilidadModal();
+    this.visibilidadContenidoModal();
   }
 
   visibilidadModal(){
@@ -85,6 +90,10 @@ export class ListarProductoComponent implements OnInit {
     if(this.esVisible){
         this.productoForm.controls['id'].disable();
     }
+  }
+
+  visibilidadContenidoModal(){
+    this.mostrarContenidoModal = !this.mostrarContenidoModal;
   }
 
   private construirFormularioProducto() {

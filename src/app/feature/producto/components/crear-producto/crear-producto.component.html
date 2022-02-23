@@ -1,70 +1,84 @@
-<h1>Agendar espacio en guardería</h1>
-<div class="row">
-  <div class="col-sm-2">
-    <h2>Solicitud</h2>
-    <form [formGroup]="productoForm" (ngSubmit)="crear()" #myForm="ngForm">
+
+  <div class="container ps-5 pe-5 pb-5 mt-5 mb-5">
+    <h2 class="text-center">Solicitud</h2>
+
+
+    <form [formGroup]="productoForm" #myForm="ngForm" (ngSubmit)="crear()">
+      <button type="submit" class="btn btn-primary mb-3 mt-3" id="botonSubmit">Guardar</button>
       <div class="row">
-        <div class="col-sm-2">
-          <label>Nombre Propietario:</label>
+        <div class="col">
+          <div class="form-floating mb-3">
+            <input validar type="text" id="nombrePropietario" name="nombrePropietario" class="form-control"
+              formControlName="nombrePropietario" placeholder="Nombre Propietario">
+            <label for="nombrePropietario">Nombre Propietario</label>
+          </div>
         </div>
-        <div class="col-sm-4">
-          <input validar type="text" id="nombrePropietario" name="nombrePropietario" placeholder="Nombre Propietario" class="form-control"
-            formControlName="nombrePropietario">
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-floating mb-3">
+            <input validar type="number" id="idPropietario" name="idPropietario" placeholder="Id Propietario"
+                class="form-control" formControlName="idPropietario" >
+            <label for="idPropietario">Id Propietario</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-floating mb-3">
+            <select validar name="tipoAnimal" id="tipoAnimal" class="form-control"
+              formControlName="tipoAnimal" placeholder="Tipo de animal" >
+              <option value="PERRO">PERRO</option>
+              <option value="GATO">GATO</option>
+            </select>
+            <label for="tipoAnimal">Tipo de animal</label>
+          </div>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-sm-2">
-          <label>Id Propietario:</label>
+        <div class="col">
+          <div class="form-floating mb-3">
+            <input validar type="date" id="fechaIngreso" name="fechaIngreso" value="2020-03-03"
+                class="form-control" formControlName="fechaIngreso" >
+            <label>Fecha de ingreso</label>
+          </div>
         </div>
-        <div class="col-sm-4">
-          <input validar type="number" id="idPropietario" name="idPropietario" placeholder="Id Propietario"
-            class="form-control" formControlName="idPropietario">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-2">
-          <label>Tipo de animal:</label>
-        </div>
-        <div class="col-sm-4">
-          <select validar name="tipoAnimal" id="tipoAnimal" class="form-control" formControlName="tipoAnimal">
-            <option value="PERRO">PERRO</option>
-            <option value="GATO">GATO</option>
-          </select>
+        <div class="col">
+          <div class="form-floating mb-3">
+            <input validar type="number" id="diasEstadia" name="diasEstadia" placeholder="Fecha ingreso"
+                class="form-control" formControlName="diasEstadia">
+            <label>Días de estadía</label>
+          </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-sm-2">
-          <label>Fecha de ingreso:</label>
-        </div>
-        <div class="col-sm-4">
-          <input validar type="date" id="fechaIngreso" name="fechaIngreso" placeholder="Fecha ingreso"
-            class="form-control" formControlName="fechaIngreso">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-2">
-          <label>Días de estadía:</label>
-        </div>
-        <div class="col-sm-4">
-          <input validar type="number" id="diasEstadia" name="diasEstadia" placeholder="Fecha ingreso"
-            class="form-control" formControlName="diasEstadia">
-        </div>
-      </div>
-      <br>
-      <button [disabled]="myForm.invalid" type="submit">Agendar</button>
     </form>
+
   </div>
 
-  <div class="col-sm-2" *ngIf="esVisible == true">
-    <h2>Facturación</h2>
-    <p>Descuento: {{(factura.valor.descuento)?'SI':'NO'}}</p>
-    <p>Estadía: {{factura.valor.diasEstadia}} días</p>
-    <p>Valor día regular: ${{factura.valor.valorDiaRegular}}</p>
-    <p>Valor día FDS: ${{factura.valor.valorDiaFDS}}</p>
-    <p>Total: ${{factura.valor.valorFacturado}}</p>
+
+  <div *ngIf="mostrarModal" class="modal" tabindex="-1" >
+    <div class="modal-dialog p-3">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" *ngIf="mostrarContenidoModal">Actualización de agenda</h5>
+          <h5 class="modal-title" *ngIf="!mostrarContenidoModal">Facturación</h5>
+          <button type="button" class="btn-close" (click)="visibilidadModal(null)" ></button>
+        </div>
+        <div class="modal-body">
+          <div class="container" *ngIf="mostrarContenidoModal">
+            <p>Descuento: {{(factura.valor.descuento)?'SI':'NO'}}</p>
+            <p>Estadía: {{factura.valor.diasEstadia}} días</p>
+            <p>Valor día regular: ${{factura.valor.valorDiaRegular}}</p>
+            <p>Valor día FDS: ${{factura.valor.valorDiaFDS}}</p>
+            <p>Total: ${{factura.valor.valorFacturado}}</p>
+          </div>
+          <div class="container" *ngIf="!mostrarContenidoModal">
+            <p>Mensaje: {{mensajeError}}</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+
+
