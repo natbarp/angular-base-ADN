@@ -11,6 +11,14 @@ pipeline {
   }
 
   stages{
+
+    stage('Checkout') {
+      steps{
+        echo "------------>Checkout<------------"
+        checkout scm
+      }
+    }
+
     stage('NPM Install') {
           steps {
             echo "------------>Installing<------------"

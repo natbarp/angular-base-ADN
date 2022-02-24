@@ -34,7 +34,6 @@ export class CrearSolicitudComponent implements OnInit {
     this.guarderiaService.guardar(this.solicitudForm.value).subscribe(
       data => {
         this.factura = data;
-        // this.factura.pipe(map((valor)=>{return valor})) = data;
         this.visibilidadModal(null);
       },
       error => {
