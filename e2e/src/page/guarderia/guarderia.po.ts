@@ -28,21 +28,27 @@ export class GuarderiaPage {
     expect(element(by.css('div.modal')).isPresent()).toBe(true);
   }
 
+  get modalPresente(){
+    return element(by.css('div.modal')).isPresent();
+  }
+  // objeto para capturar todos los getters
+
+
   async borrar() {
     let idBotonBorrar;
     console.log((await element.all(by.css('.btn.btn-danger')).count()).valueOf());
-    await element.all(by.css('.btn.btn-danger')).then(function(botones){
+    await element.all(by.css('.btn.btn-danger')).then((botones) => {
       idBotonBorrar = botones[0];
       botones[0].click();
       // switcheo y enfoco a la alert, para luego aceptar
       browser.switchTo().alert().accept();
     });
-    expect(element(by.id('\''+idBotonBorrar.getId()+'\'')).isPresent()).toBe(false);
+    expect(element(by.id('\'' + idBotonBorrar.getId() + '\'')).isPresent()).toBe(false);
     console.log((await element.all(by.css('.btn.btn-danger')).count()).valueOf());
   }
 
   async ejecutarActualizacion() {
-    await element.all(by.css('.btn.btn-warning')).then(function(botones){
+    await element.all(by.css('.btn.btn-warning')).then((botones) => {
       botones[0].click();
       expect(element(by.id('formActualizar')).isPresent()).toBe(true);
     });

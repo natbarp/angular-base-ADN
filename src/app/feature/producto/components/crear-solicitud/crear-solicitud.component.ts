@@ -18,9 +18,9 @@ export class CrearSolicitudComponent implements OnInit {
   solicitudForm: FormGroup;
   // factura: Observable<Factura>;
   factura: Factura;
-  mostrarModal: Boolean = false;
-  mostrarContenidoModal: Boolean = false;
-  mensajeError: String;
+  mostrarModal = false;
+  mostrarContenidoModal = false;
+  mensajeError: string;
 
   constructor(protected guarderiaService: GuarderiaService) { }
 
@@ -28,6 +28,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.construirFormularioProducto();
   }
 
+  // con suscribe solicitud
   crear() {
     console.log(this.solicitudForm.value);
     this.guarderiaService.guardar(this.solicitudForm.value).subscribe(
@@ -39,12 +40,12 @@ export class CrearSolicitudComponent implements OnInit {
       error => {
         this.visibilidadModal(error.error.mensaje);
       }
-      );
+    );
   }
 
   visibilidadModal(respuesta: any){
     this.mostrarModal = !this.mostrarModal;
-    if(respuesta==null){
+    if (respuesta == null){
       this.mostrarContenidoModal = true;
     }
     else{

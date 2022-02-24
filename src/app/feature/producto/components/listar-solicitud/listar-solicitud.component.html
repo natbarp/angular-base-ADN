@@ -1,6 +1,6 @@
 
 <h1>{{this.respuestaBorrado}}</h1>
-<div *ngIf="(listaProductos | async)?.length>0" class="container container-responsive ps-5 pe-5 mt-5">
+<div *ngIf="(listaSolicitudes | async)?.length>0" class="container container-responsive ps-5 pe-5 mt-5">
   <table id="tableRegistrosGuarderia" class="table table-responsive text-center">
     <thead class="table-dark">
         <tr >
@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody id="cuerpoTabla">
-        <tr *ngFor="let item of listaProductos | async">
+        <tr *ngFor="let item of listaSolicitudes | async">
             <th>{{item.id}}</th>
             <th>{{item.nombrePropietario}}</th>
             <th>{{item.idPropietario}}</th>
@@ -41,7 +41,7 @@
       </div>
       <div class="modal-body">
         <div *ngIf="mostrarContenidoModal" id="formActualizar">
-          <form [formGroup]="solicitudForm" #myForm="ngForm" (ngSubmit)="guardarActualizacion()">
+          <form [formGroup]="solicitudForm" id="solicitudForm" #myForm="ngForm" (ngSubmit)="guardarActualizacion()">
             <div class="form-floating mb-3">
               <input validar type="text" id="id" name="id" class="form-control"
                 formControlName="id" placeholder="id" [(ngModel)]="this.registro.id">

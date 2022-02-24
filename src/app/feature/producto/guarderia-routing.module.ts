@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CrearSolicitudComponent } from './components/crear-solicitud/crear-solicitud.component';
-import { ListarProductoComponent } from './components/listar-solicitud/listar-solicitud.component';
+import { ListarSolicitudComponent } from './components/listar-solicitud/listar-solicitud.component';
 import { GuarderiaComponent } from './components/guarderia/guarderia.component';
 
 
@@ -16,7 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'listar',
-        component: ListarProductoComponent
+        component: ListarSolicitudComponent
       }
     ]
   }

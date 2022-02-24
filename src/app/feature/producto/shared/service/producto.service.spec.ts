@@ -15,6 +15,14 @@ describe('ProductoService', () => {
   const apiEndpointCrear = `${environment.endpoint}/crear`;
   const apiEndpointActualizar = `${environment.endpoint}/actualizar`;
   const apiEndpointBorrar = `${environment.endpoint}/borrar`;
+  const dummyfactura = new Factura({
+    descuento: false,
+    diasEstadia: 7,
+    valorDiaRegular: 30000.0,
+    valorDiaFDS: 34500.0,
+    valorFacturado: 219000.0
+  });
+  const dummySolicitud = new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03', '7');
 
   beforeEach(() => {
     const injector = TestBed.configureTestingModule({
@@ -26,49 +34,48 @@ describe('ProductoService', () => {
   });
 
   it('should be created', () => {
-    const productService: GuarderiaService = TestBed.inject(GuarderiaService);
-    expect(productService).toBeTruthy();
+    // const guarderiaService: GuarderiaService = TestBed.inject(GuarderiaService);
+    expect(service).toBeTruthy();
   });
 
-  it('deberia listar productos', () => {
+  it('#consultar -> deberia listar productos', () => {
     const dummyProductos = [
       new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7'), new Solicitud('2', 'Test2', '12345678', 'PERRO', '2022-03-03 17:00:00', '7')
     ];
-    service.consultar().subscribe(productos => {
-      expect(productos.length).toBe(2);
-      expect(productos).toEqual(dummyProductos);
+    service.consultar().subscribe(solicitudes => {
+      expect(solicitudes.length).toBe(2);
+      expect(solicitudes).toEqual(dummyProductos);
     });
     const req = httpMock.expectOne(apiEndpointGuarderiaConsulta);
     expect(req.request.method).toBe('GET');
     req.flush(dummyProductos);
   });
 
-  it('deberia crear un producto', () => {
-    const dummyProducto = new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7');
-    service.guardar(dummyProducto).subscribe((respuesta) => {
-      expect(respuesta).toEqual(new Factura(false,4,35000.0,40250.0,150500.0));
+  it('#guardar -> deberia crear un producto', () => {
+    service.guardar(dummySolicitud).subscribe((respuesta) => {
+      expect(respuesta).toEqual(dummyfactura);
     });
     const req = httpMock.expectOne(apiEndpointCrear);
     expect(req.request.method).toBe('POST');
-    req.event(new HttpResponse<boolean>({body: true}));
+    req.event(new HttpResponse<Factura>({body: dummyfactura}));
+    expect(dummySolicitud.fechaIngreso).toBe('2022-03-03 00:00:00');
   });
 
-  it('deberia actualizar un producto', () => {
-    const dummyProducto = new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7');
-    service.actualizar(dummyProducto).subscribe((respuesta) => {
-      expect(respuesta).toEqual(new Factura(false,4,35000.0,40250.0,150500.0));
+  it('#actualizar -> deberia actualizar un producto', () => {
+    service.actualizar(dummySolicitud).subscribe((respuesta) => {
+      expect(respuesta).toEqual(dummyfactura);
     });
     const req = httpMock.expectOne(`${apiEndpointActualizar}/1`);
     expect(req.request.method).toBe('PUT');
-    req.event(new HttpResponse<boolean>({body: true}));
+    req.event(new HttpResponse<Factura>({body: dummyfactura}));
+    expect(dummySolicitud.fechaIngreso).toBe('2022-03-03 00:00:00');
   });
 
-  it('deberia eliminar un producto', () => {
-    const dummyProducto = new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7');
-    service.eliminar(+dummyProducto.id).subscribe((respuesta) => {
+  it('#eliminar -> deberia eliminar un producto', () => {
+    service.eliminar(+dummySolicitud.id).subscribe((respuesta) => {
       expect(respuesta).toEqual(true);
     });
-    const req = httpMock.expectOne(`${apiEndpointBorrar}/1`);
+    const req = httpMock.expectOne(`${apiEndpointBorrar}/` + dummySolicitud.id);
     expect(req.request.method).toBe('DELETE');
     req.event(new HttpResponse<boolean>({body: true}));
   });

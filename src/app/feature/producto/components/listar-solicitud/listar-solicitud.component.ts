@@ -7,96 +7,80 @@ import { Solicitud } from '@producto/shared/model/solicitud';
 import { Factura } from '@producto/shared/model/factura';
 
 const NUMERO_MÁXIMO = 9999999999;
+const MENSAJE_CONFIRMAR = 'Seguro que desea eliminar el resgistro No.';
+const ID = 'id';
 
 @Component({
   selector: 'app-listar-solicitud',
   templateUrl: './listar-solicitud.component.html',
   styleUrls: ['./listar-solicitud.component.scss']
 })
-export class ListarProductoComponent implements OnInit {
-  public listaProductos: Observable<Solicitud[]>;
-  public respuestaBorrado: Observable<Boolean>;
-  esVisible: Boolean = false;
-  mostrarContenidoModal: Boolean = false;
-  mensajeRespuesta: String;
+export class ListarSolicitudComponent implements OnInit {
+  public listaSolicitudes: Observable<Solicitud[]>;
+  public respuestaBorrado: Observable<boolean>;
+  esVisible = false;
+  mostrarContenidoModal: boolean;
+  mensajeRespuesta: string;
   datosRecibidos: any;
   solicitudForm: FormGroup;
   registroSeleccionado: number;
   registro: Solicitud;
   factura: Factura;
 
+
+
   constructor(protected guarderiaService: GuarderiaService) {}
 
   ngOnInit() {
-    this.listaProductos = this.guarderiaService.consultar();
+    this.listaSolicitudes = this.guarderiaService.consultar();
     this.construirFormularioProducto();
   }
 
-  borrar(id: number) {
-    var confirmar = confirm("Seguro que desea eliminar el resgistro No." + id);
-    if (confirmar == true) {
-      this.guarderiaService.eliminar(id)
-        .subscribe(
-          (successData) => {
-            this.datosRecibidos = successData;
-            console.log("----status----");
-            console.log(successData);
-            this.mostrarData(this.datosRecibidos);
-            this.listaProductos = this.guarderiaService.consultar();
-            return successData;
-        },
-          (error) => {
-            this.mostrarData(error.error.mensaje);
-          }
-      );
-
+  async borrar(id: number) {
+    if (this.confirmarAlert(MENSAJE_CONFIRMAR + id)) {
+      try {
+        await this.guarderiaService.eliminar(id).toPromise();
+        this.listaSolicitudes = this.guarderiaService.consultar();
+      } catch (error) {
+          console.log(error.error.mensaje);
+        }
     }
   }
 
-  mostrarData(respuesta: any){
-    if(respuesta==null){
-      this.mensajeRespuesta='Registro eliminado';
-      console.log(this.mensajeRespuesta);
-    }
-    else{
-      this.mensajeRespuesta=respuesta;
-      console.log(this.mensajeRespuesta);
-    }
+  confirmarAlert(mensaje){
+    return confirm(mensaje);
   }
 
-  actualizar(producto: Solicitud){
+  actualizar(solicitud: Solicitud){
     this.visibilidadModal();
-    this.visibilidadContenidoModal();
-    this.registroSeleccionado = +producto.id; //convierte string en numerico
-    this.registro = producto;
-    let division = this.registro.fechaIngreso.split(" ");
-    this.registro.fechaIngreso = division[0];
+    this.mostrarContenidoModal = true;
+    this.registro = solicitud;
+    const divisionDatoFecha = this.registro.fechaIngreso.split(' ');
+    this.registro.fechaIngreso = divisionDatoFecha[0];
   }
 
-  guardarActualizacion(){
-    console.log("----Datos a actualizar----");
-    this.solicitudForm.value.id = this.registro.id;
-    console.log(this.solicitudForm.value);
-    this.guarderiaService.actualizar(this.solicitudForm.value).subscribe(data => {
-      this.factura = data;
+  async guardarActualizacion(){
+    this.asignarId();
+    try {
+      this.factura = await this.guarderiaService.actualizar(this.solicitudForm.value).toPromise();
+      this.mostrarContenidoModal = false;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-      return data;
-    });
-    this.visibilidadContenidoModal();
+  asignarId(){
+    this.solicitudForm.value.id = this.registro.id;
   }
 
   visibilidadModal(){
     this.esVisible = !this.esVisible;
-    if(this.esVisible){
-        this.solicitudForm.controls['id'].disable();
+    if (this.esVisible) {
+        this.solicitudForm.controls[ID].disable();
     }
   }
 
-  visibilidadContenidoModal(){
-    this.mostrarContenidoModal = !this.mostrarContenidoModal;
-  }
-
-  private construirFormularioProducto() {
+  public construirFormularioProducto() {
     this.solicitudForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombrePropietario: new FormControl('', [Validators.required]),

@@ -16,23 +16,23 @@ export class GuarderiaService {
   }
 
   public guardar(producto: Solicitud) {
-    if(producto.fechaIngreso.indexOf(' 00:00:00')<0) {
-      producto.fechaIngreso = producto.fechaIngreso.replace(/\s+/g, ' ')+' 00:00:00';
+    if (producto.fechaIngreso.indexOf(' 00:00:00') < 0) {
+      producto.fechaIngreso = producto.fechaIngreso.replace(/\s+/g, ' ') + ' 00:00:00';
     }
-    return this.http.doPost<Solicitud,Factura>(`${environment.endpoint}/crear`, producto,
+    return this.http.doPost<Solicitud, Factura>(`${environment.endpoint}/crear`, producto,
                                                 this.http.optsName('crear registro'));
   }
 
   public actualizar(producto: Solicitud) {
-    if(producto.fechaIngreso.indexOf(' 00:00:00')<0) {
-      producto.fechaIngreso = producto.fechaIngreso.replace(/\s+/g, ' ')+' 00:00:00';
+    if (producto.fechaIngreso.indexOf(' 00:00:00') < 0) {
+      producto.fechaIngreso = producto.fechaIngreso.replace(/\s+/g, ' ') + ' 00:00:00';
     }
-    return this.http.doPut<Solicitud,Factura>(`${environment.endpoint}/actualizar/${producto.id}`, producto,
+    return this.http.doPut<Solicitud, Factura>(`${environment.endpoint}/actualizar/${producto.id}`, producto,
                                                 this.http.optsName('actualizar registro'));
   }
 
   public eliminar(id: number) {
-    return this.http.doDelete<Boolean>(`${environment.endpoint}/borrar/${id}`,
+    return this.http.doDelete<boolean>(`${environment.endpoint}/borrar/${id}`,
                                                  this.http.optsName('eliminar productos'));
   }
 }

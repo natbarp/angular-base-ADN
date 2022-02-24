@@ -29,7 +29,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  imageToolbar: String = '../../../assets/image/image1.png';
+  imageToolbar = '../../../assets/image/image1.png';
   constructor() { }
 
   ngOnInit() {

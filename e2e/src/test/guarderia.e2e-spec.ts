@@ -7,7 +7,7 @@ describe('workspace-project Producto', () => {
     let page: AppPage;
     let navBar: NavbarPage;
     let guarderia: GuarderiaPage;
-    var registrosIniciales: number;
+    let registrosIniciales: number;
 
     beforeEach(() => {
         page = new AppPage();
@@ -19,20 +19,20 @@ describe('workspace-project Producto', () => {
       page.navigateTo();
       navBar.clickBotonGuarderia();
       guarderia.clickBotonListarSolicitud();
-      guarderia.contarProductos().then((cantidad)=>{
+      guarderia.contarProductos().then((cantidad) => {
         registrosIniciales = cantidad.valueOf();
         console.log(registrosIniciales);
-      })
+      });
       expect(guarderia.contarProductos()).toBe(guarderia.contarProductos());
     });
 
     it('Deberia crear producto y ejecutar un modal con información del servidor', () => {
-        const ANIMALES = new Array("PERRO", "GATO");
+        const ANIMALES = new Array('PERRO', 'GATO');
         const MIN = Math.ceil(0);
         const MAX = Math.floor(2);
         const NOMBRE_PROPIETARIO = 'TEST e2e';
-        const ID_PROPIETARIO = Math.random()*999999;
-        const TIPO_ANIMAL = ANIMALES[Math.floor(Math.random()*(MAX - MIN) + MIN)];
+        const ID_PROPIETARIO = Math.random() * 999999;
+        const TIPO_ANIMAL = ANIMALES[Math.floor(Math.random() * (MAX - MIN) + MIN)];
         const FECHA_INGRESO = '03-03-2022';
         const DIAS_ESTADIA = '7';
 
@@ -53,7 +53,7 @@ describe('workspace-project Producto', () => {
       page.navigateTo();
       navBar.clickBotonGuarderia();
       guarderia.clickBotonListarSolicitud();
-      expect(guarderia.contarProductos()).toBe(registrosIniciales+1);
+      expect(guarderia.contarProductos()).toBe(registrosIniciales + 1);
     });
 
     it('Deberia borrar un item y retirarse de la lista de registros', () => {
@@ -66,7 +66,7 @@ describe('workspace-project Producto', () => {
     it('Deberia actualizar un item y retornar datos de facturación', () => {
       const MIN = Math.ceil(1);
       const MAX = Math.floor(999999);
-      const ID_PROPIETARIO = Math.floor(Math.random()*(MAX - MIN) + MIN);
+      const ID_PROPIETARIO = Math.floor(Math.random() * (MAX - MIN) + MIN);
 
       page.navigateTo();
       navBar.clickBotonGuarderia();
