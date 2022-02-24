@@ -1,16 +1,16 @@
-@Library('ceiba-jenkins-library')
-
 pipeline {
   agent {
-    label 'nodejs11'
-  }
-
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '3'))
-    disableConcurrentBuilds()
+    label 'Slave_Induccion'
   }
 
   stages{
+
+    stage('NPM Install') {
+      steps {
+        echo "------------>Installing<------------"
+        sh 'npm install'
+      }
+    }
 
     stage('Checkout') {
       steps{
@@ -19,12 +19,11 @@ pipeline {
       }
     }
 
-    stage('NPM Install') {
-          steps {
-            echo "------------>Installing<------------"
-            sh 'npm install'
-          }
-        }
+    stage('esLint') {
+      steps {
+        sh 'npm run lint'
+      }
+    }
 
     stage('Unit Test') {
       steps {
@@ -40,6 +39,13 @@ pipeline {
       }
     }
 
+    stage('Build') {
+      steps {
+        echo "------------>Building<------------"
+        sh 'npm run build'
+      }
+    }
+
     stage('Static Code Analysis') {
       steps{
         echo '------------>Análisis de código estático<------------'
@@ -49,12 +55,7 @@ pipeline {
         }
     }
 
-    stage('Build') {
-      steps {
-        echo "------------>Building<------------"
-        sh 'npm run build'
-      }
-    }
+
   }
 
   post {
