@@ -2,7 +2,7 @@
 
 pipeline {
   agent {
-    label 'Slave_Induccion'
+    label 'nodejs11'
   }
 
   options {
