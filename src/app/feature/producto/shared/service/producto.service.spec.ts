@@ -23,6 +23,7 @@ describe('ProductoService', () => {
     valorFacturado: 219000.0
   });
   const dummySolicitud = new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03', '7');
+  const dummySolicitud2 = new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 00:00:00', '7');
 
   beforeEach(() => {
     const injector = TestBed.configureTestingModule({
@@ -51,7 +52,7 @@ describe('ProductoService', () => {
     req.flush(dummyProductos);
   });
 
-  it('#guardar -> deberia crear un producto', () => {
+  it('#guardar -> deberia crear un producto ajustando su fecha', () => {
     service.guardar(dummySolicitud).subscribe((respuesta) => {
       expect(respuesta).toEqual(dummyfactura);
     });
@@ -61,7 +62,17 @@ describe('ProductoService', () => {
     expect(dummySolicitud.fechaIngreso).toBe('2022-03-03 00:00:00');
   });
 
-  it('#actualizar -> deberia actualizar un producto', () => {
+  it('#guardar -> deberia crear un producto sin ajustar fecha', () => {
+    service.guardar(dummySolicitud2).subscribe((respuesta) => {
+      expect(respuesta).toEqual(dummyfactura);
+    });
+    const req = httpMock.expectOne(apiEndpointCrear);
+    expect(req.request.method).toBe('POST');
+    req.event(new HttpResponse<Factura>({body: dummyfactura}));
+    expect(dummySolicitud2.fechaIngreso).toBe('2022-03-03 00:00:00');
+  });
+
+  it('#actualizar -> deberia actualizar un producto ajustando su fecha', () => {
     service.actualizar(dummySolicitud).subscribe((respuesta) => {
       expect(respuesta).toEqual(dummyfactura);
     });
@@ -69,6 +80,16 @@ describe('ProductoService', () => {
     expect(req.request.method).toBe('PUT');
     req.event(new HttpResponse<Factura>({body: dummyfactura}));
     expect(dummySolicitud.fechaIngreso).toBe('2022-03-03 00:00:00');
+  });
+
+  it('#actualizar -> deberia actualizar un producto sin ajustar su fecha', () => {
+    service.actualizar(dummySolicitud2).subscribe((respuesta) => {
+      expect(respuesta).toEqual(dummyfactura);
+    });
+    const req = httpMock.expectOne(`${apiEndpointActualizar}/1`);
+    expect(req.request.method).toBe('PUT');
+    req.event(new HttpResponse<Factura>({body: dummyfactura}));
+    expect(dummySolicitud2.fechaIngreso).toBe('2022-03-03 00:00:00');
   });
 
   it('#eliminar -> deberia eliminar un producto', () => {

@@ -65,14 +65,4 @@ export class HttpService {
     const ropts = this.createOptions(opts);
     return this.http.delete<R>(serviceUrl, ropts);
   }
-
-  public doGetParameters<T>(serviceUrl: string, parametros: HttpParams, opts?: Options): Observable<T> {
-    const ropts = this.createOptions(opts);
-    const options = parametros !== null ? {
-      headers: ropts.headers,
-      params: parametros
-    } as Options : ropts;
-
-    return this.http.get<T>(serviceUrl, options);
-  }
 }

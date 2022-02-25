@@ -83,6 +83,17 @@ describe('ListarProductoComponent', () => {
     expect(respuestaConfirmarAlert).toHaveBeenCalled();
   }));
 
+  it(`#borrar -> Deberia no hacer nada si el dialog no se acepta`, () => {
+    // arrange
+    const respuestaConfirmarAlert = spyOn(component, 'confirmarAlert').and.returnValue(false);
+    const respuestaServicioEliminar = spyOn(guarderiaService, 'eliminar').and.returnValue(of(true));
+    // act
+    component.borrar(1);
+    // assert
+    expect(respuestaServicioEliminar).not.toHaveBeenCalled();
+    expect(respuestaConfirmarAlert).toHaveBeenCalled();
+  });
+
   it(`#borrar -> debería presentarse e irse a catch, mensajeError guardaria la respuesta,
       mostrarContenidoModal es false, y existeError true`, fakeAsync(() => {
     // arrange
@@ -148,6 +159,16 @@ describe('ListarProductoComponent', () => {
     expect(component.solicitudForm.valid).toBeTruthy();
   });
 
+  it(`#confirmarAlert -> `, () => {
+    // arrange
+    const mensaje = 'Acepta?';
+    // act
+    const confirmMensaje = spyOn(component, 'confirmarAlert').and.callThrough();
+    component.confirmarAlert(mensaje);
+    // assert
+    expect(confirmMensaje).toHaveBeenCalledWith(mensaje);
+  });
+
   it(`#asignarId -> id de SolicitudForm debe ser igual a id de registro`, () => {
     // arrange
     component.construirFormularioProducto();
@@ -170,4 +191,15 @@ describe('ListarProductoComponent', () => {
     expect(component.esVisible).toBeTrue();
     expect(component.solicitudForm.controls[ID].disabled).toBeTrue();
   });
+
+  it(`#visibilidadModal -> esVisible alterna su estado y si es false no debe hacerse nada mas`, () => {
+    // arrange
+    component.esVisible = true;
+    // act
+    component.visibilidadModal();
+    // assert
+    expect(component.esVisible).toBeFalse();
+  });
+
+
 });
