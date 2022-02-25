@@ -1,50 +1,56 @@
+@Library('ceiba-jenkins-library') _
 pipeline {
   agent {
     label 'Slave_Induccion'
   }
 
+  tools {
+    jdk 'JDK8_Centos'
+  }
+
   stages{
 
-    stage('NPM Install') {
+    stage('Checkout'){
       steps {
-        echo "------------>Installing<------------"
-        sh 'npm install'
+				echo "------------>Checkout<------------"
+				checkout scm
+                }
       }
-    }
 
-    stage('Checkout') {
-      steps{
-        echo "------------>Checkout<------------"
-        checkout scm
+      stage('Install') {
+          steps {
+            echo "------------>Install<------------"
+            sh 'npm install'
+          }
       }
-    }
 
-    stage('esLint') {
-      steps {
-        sh 'npm run lint'
+      stage('Build') {
+          steps {
+            echo "------------>Build<------------"
+            sh 'npm run build'
+          }
       }
-    }
 
-    stage('Unit Test') {
-      steps {
-        echo "------------>Testing<------------"
-        sh 'npm run test'
+      stage('esLint') {
+        steps {
+          echo "------------>Lint<------------"
+          sh 'npm run lint'
+        }
       }
-    }
 
-    stage('Test end-to-end') {
-      steps{
-        echo "------------>Testing Protractor<------------"
-        sh 'npm run e2e'
+      stage('Test') {
+          steps {
+            echo "------------>Testing<------------"
+            sh 'npm run test'
+          }
       }
-    }
 
-    stage('Build') {
-      steps {
-        echo "------------>Building<------------"
-        sh 'npm run build'
-      }
-    }
+    // stage('Test end-to-end') {
+    //   steps{
+    //     echo "------------>Testing Protractor<------------"
+    //     sh 'npm run e2e'
+    //   }
+    // }
 
     stage('Static Code Analysis') {
       steps{
