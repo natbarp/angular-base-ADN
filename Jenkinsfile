@@ -12,38 +12,38 @@ pipeline {
 
     stage('Checkout'){
       steps {
-				echo "------------>Checkout<------------"
-				checkout scm
-                }
+        echo "------------>Checkout<------------"
+        checkout scm
       }
+    }
 
-      stage('Install') {
-          steps {
-            echo "------------>Install<------------"
-            sh 'npm install'
-          }
+    stage('Install') {
+      steps {
+        echo "------------>Install<------------"
+        sh 'npm install'
       }
+    }
 
-      stage('Build') {
-          steps {
-            echo "------------>Build<------------"
-            sh 'npm run build'
-          }
-      }
-
-      stage('esLint') {
+    stage('Build') {
         steps {
-          echo "------------>Lint<------------"
-          sh 'npm run lint'
+          echo "------------>Build<------------"
+          sh 'npm run build'
         }
-      }
+    }
 
-      stage('Test') {
-          steps {
-            echo "------------>Testing<------------"
-            sh 'npm run test'
-          }
+    stage('esLint') {
+      steps {
+        echo "------------>Lint<------------"
+        sh 'npm run lint'
       }
+    }
+
+    stage('Test') {
+        steps {
+          echo "------------>Testing<------------"
+          sh 'npm run test -- --watch=false --browsers ChromeHeadless'
+        }
+    }
 
     // stage('Test end-to-end') {
     //   steps{
