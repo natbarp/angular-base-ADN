@@ -1,7 +1,7 @@
 
 <h1>{{this.respuestaBorrado}}</h1>
 <div *ngIf="(listaSolicitudes | async)?.length>0" class="container container-responsive ps-5 pe-5 mt-5">
-  <table id="tableRegistrosGuarderia" class="table table-responsive text-center">
+  <table aria-label="Relacion de todas las solicitudes en el sistema"  id="tableRegistrosGuarderia" class="table table-responsive text-center">
     <thead class="table-dark">
         <tr >
             <th>#</th>
