@@ -82,13 +82,19 @@
           </form>
         </div>
 
-        <div class="container" id="facturacion" *ngIf="!mostrarContenidoModal">
-          <p>Descuento: {{(factura.valor.descuento)?'SI':'NO'}}</p>
-          <p>Estadía: {{factura.valor.diasEstadia}} días</p>
-          <p>Valor día regular: ${{factura.valor.valorDiaRegular}}</p>
-          <p>Valor día FDS: ${{factura.valor.valorDiaFDS}}</p>
-          <p>Total: ${{factura.valor.valorFacturado}}</p>
+        <div class="container" *ngIf="!mostrarContenidoModal">
+          <div *ngIf="!existeError">
+            <p>Descuento: {{(factura.valor.descuento)?'SI':'NO'}}</p>
+            <p>Estadía: {{factura.valor.diasEstadia}} días</p>
+            <p>Valor día regular: ${{factura.valor.valorDiaRegular}}</p>
+            <p>Valor día FDS: ${{factura.valor.valorDiaFDS}}</p>
+            <p>Total: ${{factura.valor.valorFacturado}}</p>
+          </div>
+          <div *ngIf="existeError">
+            <p>{{mensajeError}}</p>
+          </div>
         </div>
+
       </div>
     </div>
   </div>

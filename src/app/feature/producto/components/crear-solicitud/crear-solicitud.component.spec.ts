@@ -9,7 +9,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Solicitud } from '@producto/shared/model/solicitud';
 import { Factura } from '@producto/shared/model/factura';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('CrearProductoComponent', () => {
   let component: CrearSolicitudComponent;
@@ -63,6 +63,22 @@ describe('CrearProductoComponent', () => {
     // assert
     expect(component.factura).toBe(factura);
     expect(visibilidadModal).toHaveBeenCalled();
+    expect(respuestaServicioGuardar).toHaveBeenCalled();
+  }));
+
+  it(`#crear -> Debería llamarse al catch, por lo que factura es indefinida y se llama al metodo visibilidadModal
+      con el mensaje de error`, fakeAsync(() => {
+    // arrange
+    component.construirFormularioProducto();
+    const mensajeError = 'No es posible crear';
+    const respuestaServicioGuardar = spyOn(guarderiaService, 'guardar').and.returnValue(throwError({status: 404, error: {mensaje: mensajeError}}));
+    const visibilidadModal = spyOn(component, 'visibilidadModal');
+    // act
+    component.crear();
+    tick(100);
+    // assert
+    expect(component.factura).not.toBeDefined();
+    expect(visibilidadModal).toHaveBeenCalledWith(mensajeError);
     expect(respuestaServicioGuardar).toHaveBeenCalled();
   }));
 

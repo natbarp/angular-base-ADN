@@ -2,12 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GuarderiaService } from '../../shared/service/guarderia.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Factura } from '@producto/shared/model/factura';
-// import { Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
 
-// const LONGITUD_MINIMA_PERMITIDA_TEXTO = 3;
-// const LONGITUD_MAXIMA_PERMITIDA_TEXTO = 20;
-const NUMERO_MÁXIMO = 9999999999;
+const NUMERO_MAXIMO = 9999999999;
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -16,7 +12,6 @@ const NUMERO_MÁXIMO = 9999999999;
 })
 export class CrearSolicitudComponent implements OnInit {
   solicitudForm: FormGroup;
-  // factura: Observable<Factura>;
   factura: Factura;
   mostrarModal = false;
   mostrarContenidoModal = false;
@@ -28,9 +23,7 @@ export class CrearSolicitudComponent implements OnInit {
     this.construirFormularioProducto();
   }
 
-  // con suscribe solicitud
   crear() {
-    console.log(this.solicitudForm.value);
     this.guarderiaService.guardar(this.solicitudForm.value).subscribe(
       data => {
         this.factura = data;
@@ -42,7 +35,7 @@ export class CrearSolicitudComponent implements OnInit {
     );
   }
 
-  visibilidadModal(respuesta: any){
+  visibilidadModal(respuesta: string){
     this.mostrarModal = !this.mostrarModal;
     if (respuesta == null){
       this.mostrarContenidoModal = true;
@@ -57,7 +50,7 @@ export class CrearSolicitudComponent implements OnInit {
   public construirFormularioProducto() {
     this.solicitudForm = new FormGroup({
       nombrePropietario: new FormControl('', [Validators.required]),
-      idPropietario: new FormControl('', [Validators.required, Validators.max(NUMERO_MÁXIMO)]),
+      idPropietario: new FormControl('', [Validators.required, Validators.max(NUMERO_MAXIMO)]),
       tipoAnimal: new FormControl('', [Validators.required]),
       fechaIngreso: new FormControl('', [Validators.required]),
       diasEstadia: new FormControl('', [Validators.required])

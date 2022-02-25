@@ -1,5 +1,5 @@
 import { waitForAsync, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { ListarSolicitudComponent } from './listar-solicitud.component';
 import { CommonModule } from '@angular/common';
@@ -10,13 +10,11 @@ import { HttpService } from 'src/app/core/services/http.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Factura } from '@producto/shared/model/factura';
-// import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 describe('ListarProductoComponent', () => {
   let component: ListarSolicitudComponent;
   let fixture: ComponentFixture<ListarSolicitudComponent>;
   let guarderiaService: GuarderiaService;
-  // let solicitudForm: FormGroup;
   const solicitud: Solicitud = new Solicitud('1', 'Test', '123', 'PERRO', '2022-03-03 17:00:00', '7');
   const listaSolicitudes: Solicitud[] = [
     new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7'),
@@ -69,35 +67,38 @@ describe('ListarProductoComponent', () => {
     });
   });
 
-  it('#borrar -> Se debería llamar el método confirmarAlert, respuestaBorrar, y servicio eliminar debería return true ', fakeAsync(() => {
+  it(`#borrar -> Se debería llamar el método confirmarAlert, y servicio eliminar
+      debería return true y el servicio consultar tambien es llamado`, fakeAsync(() => {
     // arrange
     const respuestaServicioEliminar = spyOn(guarderiaService, 'eliminar').and.returnValue(of(true));
     const respuestaServicioConsultar = spyOn(guarderiaService, 'consultar').and.returnValue(of(listaSolicitudes));
     const respuestaConfirmarAlert = spyOn(component, 'confirmarAlert').and.returnValue(true);
-    // const respuestaBorrar = spyOn(component, 'respuestaBorrar').and.callThrough();
     // act
     component.borrar(1);
     tick(100);
     // assert
     expect(respuestaServicioEliminar).toHaveBeenCalled();
+    expect(respuestaServicioEliminar).toBeTruthy();
     expect(respuestaServicioConsultar).toHaveBeenCalled();
     expect(respuestaConfirmarAlert).toHaveBeenCalled();
   }));
 
-  // it('#confirmarAlert -> Debería retornar un true al aceptarse el confirm', () => {
-  //   const respuestaConfirmarAlert = spyOn(component, "confirmarAlert").and.callThrough();
-  //   expect(respuestaConfirmarAlert).toBeTruthy();
-  // });
-
-  // it('#respuestaBorrar -> mensajeRespuesta debería tener el mensaje de registro eliminado', () => {
-  //   component.respuestaBorrar(null);
-  //   expect(component.mensajeRespuesta).toBe("Registro eliminado");
-  // });
-
-  // it('#respuestaBorrar -> mensajeRespuesta debería tener el mismo valor con el que fue llamado', () => {
-  //   component.respuestaBorrar("Esto es un error");
-  //   expect(component.mensajeRespuesta).toBe("Esto es un error")
-  // });
+  it(`#borrar -> debería presentarse e irse a catch, mensajeError guardaria la respuesta,
+      mostrarContenidoModal es false, y existeError true`, fakeAsync(() => {
+    // arrange
+    const mensajeError = 'No es posible eliminar';
+    const respuestaConfirmarAlert = spyOn(component, 'confirmarAlert').and.returnValue(true);
+    const respuestaServicioEliminar = spyOn(guarderiaService, 'eliminar').and.returnValue(throwError({status: 404, error: {mensaje: mensajeError}}));
+    // act
+    component.borrar(1);
+    tick(100);
+    // assert
+    expect(respuestaServicioEliminar).toHaveBeenCalled();
+    expect(respuestaConfirmarAlert).toHaveBeenCalled();
+    expect(component.mensajeError).toBe(mensajeError);
+    expect(component.mostrarContenidoModal).toBeFalse();
+    expect(component.existeError).toBeTrue();
+  }));
 
   it(`#actualizar -> Debería llamarse a visibilidadModal, registro debe guardar a solicitud
   y su fecha de ingreso debe ser yyyy-mm-aa, sin tiempo. mostrarContenidoModal debe ser true`, () => {

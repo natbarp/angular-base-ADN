@@ -6,7 +6,7 @@ import { GuarderiaService } from '@producto/shared/service/guarderia.service';
 import { Solicitud } from '@producto/shared/model/solicitud';
 import { Factura } from '@producto/shared/model/factura';
 
-const NUMERO_MÁXIMO = 9999999999;
+const NUMERO_MAXIMO = 9999999999;
 const MENSAJE_CONFIRMAR = 'Seguro que desea eliminar el resgistro No.';
 const ID = 'id';
 
@@ -20,8 +20,8 @@ export class ListarSolicitudComponent implements OnInit {
   public respuestaBorrado: Observable<boolean>;
   esVisible = false;
   mostrarContenidoModal: boolean;
-  mensajeRespuesta: string;
-  datosRecibidos: any;
+  existeError = false;
+  mensajeError: string;
   solicitudForm: FormGroup;
   registroSeleccionado: number;
   registro: Solicitud;
@@ -42,7 +42,9 @@ export class ListarSolicitudComponent implements OnInit {
         await this.guarderiaService.eliminar(id).toPromise();
         this.listaSolicitudes = this.guarderiaService.consultar();
       } catch (error) {
-          console.log(error.error.mensaje);
+          this.mensajeError = error.error.mensaje;
+          this.mostrarContenidoModal = false;
+          this.existeError = true;
         }
     }
   }
@@ -62,11 +64,12 @@ export class ListarSolicitudComponent implements OnInit {
   async guardarActualizacion(){
     this.asignarId();
     try {
-      this.factura = await this.guarderiaService.actualizar(this.solicitudForm.value).toPromise();
-      this.mostrarContenidoModal = false;
+      this.factura = await this.guarderiaService.actualizar(this.solicitudForm.value).toPromise().then();
     } catch (error) {
-      console.log(error);
+        this.mensajeError = error.error.mensaje;
+        this.existeError = true;
     }
+    this.mostrarContenidoModal = false;
   }
 
   asignarId(){
@@ -84,7 +87,7 @@ export class ListarSolicitudComponent implements OnInit {
     this.solicitudForm = new FormGroup({
       id: new FormControl('', [Validators.required]),
       nombrePropietario: new FormControl('', [Validators.required]),
-      idPropietario: new FormControl('', [Validators.required, Validators.max(NUMERO_MÁXIMO)]),
+      idPropietario: new FormControl('', [Validators.required, Validators.max(NUMERO_MAXIMO)]),
       tipoAnimal: new FormControl('', [Validators.required]),
       fechaIngreso: new FormControl('', [Validators.required]),
       diasEstadia: new FormControl('', [Validators.required])
