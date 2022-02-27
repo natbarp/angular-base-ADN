@@ -15,24 +15,24 @@ export class GuarderiaService {
     return this.http.doGet<Solicitud[]>(`${environment.endpoint}/listar`, this.http.optsName('consultar registros'));
   }
 
-  public guardar(producto: Solicitud) {
-    if (producto.fechaIngreso.indexOf(' 00:00:00') < 0) {
-      producto.fechaIngreso = producto.fechaIngreso.replace(/\s+/g, ' ') + ' 00:00:00';
+  public guardar(solicitud: Solicitud) {
+    if (solicitud.fechaIngreso.indexOf(' 00:00:00') < 0) {
+      solicitud.fechaIngreso = solicitud.fechaIngreso.replace(/\s+/g, ' ') + ' 00:00:00';
     }
-    return this.http.doPost<Solicitud, Factura>(`${environment.endpoint}/crear`, producto,
+    return this.http.doPost<Solicitud, Factura>(`${environment.endpoint}/crear`, solicitud,
                                                 this.http.optsName('crear registro'));
   }
 
-  public actualizar(producto: Solicitud) {
-    if (producto.fechaIngreso.indexOf(' 00:00:00') < 0) {
-      producto.fechaIngreso = producto.fechaIngreso.replace(/\s+/g, ' ') + ' 00:00:00';
+  public actualizar(solicitud: Solicitud) {
+    if (solicitud.fechaIngreso.indexOf(' 00:00:00') < 0) {
+      solicitud.fechaIngreso = solicitud.fechaIngreso.replace(/\s+/g, ' ') + ' 00:00:00';
     }
-    return this.http.doPut<Solicitud, Factura>(`${environment.endpoint}/actualizar/${producto.id}`, producto,
+    return this.http.doPut<Solicitud, Factura>(`${environment.endpoint}/actualizar/${solicitud.id}`, solicitud,
                                                 this.http.optsName('actualizar registro'));
   }
 
   public eliminar(id: number) {
     return this.http.doDelete<boolean>(`${environment.endpoint}/borrar/${id}`,
-                                                 this.http.optsName('eliminar productos'));
+                                                 this.http.optsName('eliminar registro'));
   }
 }

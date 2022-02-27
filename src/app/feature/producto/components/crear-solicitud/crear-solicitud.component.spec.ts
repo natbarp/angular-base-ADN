@@ -50,6 +50,11 @@ describe('CrearProductoComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('#ngOnInit -> Debería ejecutar lo de ngOnInit, por lo que debe ser llamada la funcion construirFormularioProducto', () => {
+    const llamarFormulario = spyOn(component, 'construirFormularioProducto');
+    component.ngOnInit();
+    expect(llamarFormulario).toHaveBeenCalled();
+  });
 
   it(`#crear -> Debería llamar al servicio guardar y retornar obj factura. El metodo visibilidadModal
       tambien debería ser llamado y factura del componente debe ser igual al valor retornado`, fakeAsync(() => {

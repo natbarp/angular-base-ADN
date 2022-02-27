@@ -164,6 +164,23 @@ describe('ListarProductoComponent', () => {
     expect(component.mostrarContenidoModal).toBeFalse();
   }));
 
+  it(`#guardarActualizacion -> debería presentarse e irse a catch, mensajeError guardaria la respuesta,
+  mostrarContenidoModal es false, y existeError true`, fakeAsync(() => {
+    // arrange
+    component.construirFormularioProducto();
+    const mensajeError = 'No es posible actualizar';
+    const asignarId = spyOn(component, 'asignarId');
+    const respuestaServicioActualizar = spyOn(guarderiaService, 'actualizar').and.returnValue(throwError({status: 404, error: {mensaje: mensajeError}}));
+    // act
+    component.guardarActualizacion();
+    tick(100);
+    // assert
+    expect(respuestaServicioActualizar).toHaveBeenCalled();
+    expect(asignarId).toHaveBeenCalled();
+    expect(component.mensajeError).toBe(mensajeError);
+    expect(component.existeError).toBeTruthy();
+  }));
+
   it(`#construirFormularioProducto -> Formulario invalido cuando está vacio`, () => {
     // act - assert
     component.construirFormularioProducto();
