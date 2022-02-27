@@ -22,4 +22,14 @@ describe('ErrorCamposPlantillaComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('#set -> se valida cumplimiento condicion if', () => {
+    component.mensajeError = true;
+    const value = false;
+    component.text = false;
+    expect(component.mensajeError).toBe(value);
+    expect(component.ocultar).not.toBe(value);
+  });
+
+
 });
