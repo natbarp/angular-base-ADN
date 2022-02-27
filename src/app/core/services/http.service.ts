@@ -35,10 +35,6 @@ export class HttpService {
         params: opts.params || defaultOpts.params,
         headers: opts.headers || defaultOpts.headers
       };
-
-      if (!opts.headers.get('Content-Type')) {
-        opts.headers = opts.headers.set('Content-Type', defaultOpts.headers.get('Content-Type'));
-      }
     }
 
     return opts || defaultOpts;

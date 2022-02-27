@@ -20,13 +20,15 @@ describe('ListarProductoComponent', () => {
     new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7'),
     new Solicitud('2', 'Test2', '12345678', 'PERRO', '2022-03-03 17:00:00', '7')
   ];
-  const factura: Factura =  new Factura({
+  const factura = new Factura({
     descuento: false,
     diasEstadia: 7,
     valorDiaRegular: 30000.0,
     valorDiaFDS: 34500.0,
     valorFacturado: 219000.0
   });
+
+
 
 
   beforeEach(waitForAsync(() => {
@@ -53,6 +55,28 @@ describe('ListarProductoComponent', () => {
 
   it('deberia crear componente', () => {
     expect(component).toBeTruthy();
+  });
+
+
+  it('Deberia crear un obj de tipo Solicitud', () => {
+    // act
+    const solicitudPrueba = new Solicitud('1', 'Test', '123', 'PERRO', '2022-03-03 17:00:00', '7');
+    // assert
+    expect(solicitudPrueba).toBeDefined();
+  });
+
+  it('Deberia crear un obj de tipo Factura', () => {
+    // act
+    const valor = {
+      descuento: false,
+      diasEstadia: 7,
+      valorDiaRegular: 30000.0,
+      valorDiaFDS: 34500.0,
+      valorFacturado: 219000.0
+    };
+    const facturaPrueba =  new Factura(valor);
+    // assert
+    expect(facturaPrueba).toBeDefined();
   });
 
   it('Deberia listar solicitudes y su tamaño ser igual a 2', () => {
