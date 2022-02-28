@@ -5,7 +5,7 @@
       <input class="form-control" type="number" id="idPropietarioBuscar" name="idPropietarioBuscar" placeholder="id del propietario">
     </div>
     <div class="col">
-      <button type="button" class="btn btn-primary" (click)="buscar()">Buscar</button>
+      <button type="button" class="btn btn-primary" id="botonBuscar" (click)="buscar()">Buscar</button>
     </div>
     <div class="col">
 
@@ -13,6 +13,7 @@
   </div>
 
 </div>
+<h2 class="ps-5 pe-5 mt-5 text-center" *ngIf="(listaSolicitudes | async)?.length==0">No hay registros</h2>
 <div *ngIf="(listaSolicitudes | async)?.length>0" class="container container-responsive ps-5 pe-5 mt-5">
   <table aria-label="Relacion de todas las solicitudes en el sistema"  id="tableRegistrosGuarderia" class="table table-responsive text-center">
     <thead class="table-dark">
@@ -27,14 +28,14 @@
         </tr>
     </thead>
     <tbody id="cuerpoTabla">
-        <tr *ngFor="let item of listaSolicitudes | async">
-          <th scope="col">{{item.id}}</th>
-          <th scope="col">{{item.nombrePropietario}}</th>
-          <th scope="col">{{item.idPropietario}}</th>
-          <th scope="col">{{item.tipoAnimal}}</th>
-          <th scope="col">{{item.fechaIngreso}}</th>
-          <th scope="col">{{item.diasEstadia}}</th>
-          <th scope="col">
+        <tr *ngFor="let item of listaSolicitudes | async; let i = index">
+          <th id="reg{{i}}_id">{{item.id}}</th>
+          <th id="reg{{i}}_nombre">{{item.nombrePropietario}}</th>
+          <th id="reg{{i}}_idPropietario">{{item.idPropietario}}</th>
+          <th id="reg{{i}}_idAnimal">{{item.tipoAnimal}}</th>
+          <th id="reg{{i}}_idFecha">{{item.fechaIngreso}}</th>
+          <th id="reg{{i}}_idEstadia">{{item.diasEstadia}}</th>
+          <th id="reg{{i}}_id">
             <button type="button" id="botonActualizarItem{{this.item.id}}" class="btn btn-warning m-1" (click)="actualizar(this.item)">Editar</button>
             <button type="button" id="botonBorrarItem{{this.item.id}}" class="btn btn-danger" (click)="borrar(this.item.id)">Borrar</button>
           </th>

@@ -49,6 +49,18 @@ describe('workspace-project Producto', () => {
       expect(guarderia.crear()).toBe(true);
     });
 
+    it('Deberia listar por id de usuario', async () => {
+      // arrange
+      // act
+      page.navigateTo();
+      navBar.clickBotonGuarderia();
+      guarderia.clickBotonListarSolicitud();
+      await guarderia.ingresarIdPropietarioBuscar(guarderia.getInputIdPropietarioBuscar());
+      await guarderia.buscar();
+      // assert
+      await expect(guarderia.contarProductos()).toBeGreaterThan(0);
+    });
+
     it('Deberia listar e indicar registro = registrosIniciales + 1 ', () => {
       // act
       page.navigateTo();
@@ -56,16 +68,6 @@ describe('workspace-project Producto', () => {
       guarderia.clickBotonListarSolicitud();
       // assert
       expect(guarderia.contarProductos()).toBe(registrosIniciales + 1);
-    });
-
-    it('Deberia borrar un item y retirarse de la lista de registros', async () => {
-      // act
-      page.navigateTo();
-      navBar.clickBotonGuarderia();
-      guarderia.clickBotonListarSolicitud();
-      // assert
-      await expect(guarderia.borrar()).toBe(false);
-      await expect(guarderia.contarProductos()).toBe(registrosIniciales);
     });
 
     it('Deberia actualizar un item y retornar datos de facturación', () => {
@@ -81,6 +83,16 @@ describe('workspace-project Producto', () => {
       guarderia.ingresarIdPropietario(ID_PROPIETARIO);
       // assert
       expect(guarderia.actualizar()).toBe(true);
+    });
+
+    it('Deberia borrar un item y retirarse de la lista de registros', async () => {
+      // act
+      page.navigateTo();
+      navBar.clickBotonGuarderia();
+      guarderia.clickBotonListarSolicitud();
+      // assert
+      await expect(guarderia.borrar()).toBe(false);
+      await expect(guarderia.contarProductos()).toBe(registrosIniciales);
     });
 
 

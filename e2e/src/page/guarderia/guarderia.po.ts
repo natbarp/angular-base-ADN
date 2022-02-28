@@ -4,6 +4,9 @@ export class GuarderiaPage {
   private linkCrearSolicitud = element(by.id('linkCrearProducto'));
   private linkListarSolicitud = element(by.id('linkListarProducto'));
 
+  // private inputIdPropietarioBuscar = element(by.id('idPropietarioBuscar'));
+  private
+
   private inputNombrePropietario = element(by.id('nombrePropietario'));
   private inputIdPropietario = element(by.id('idPropietario'));
   private inputTipoAnimal = element(by.id('tipoAnimal'));
@@ -52,6 +55,10 @@ export class GuarderiaPage {
     });
   }
 
+  async buscar() {
+    await element(by.id('botonBuscar')).click();
+  }
+
   async actualizar() {
     await element(by.id('botonSubmit')).click();
     return element(by.id('facturacion')).isPresent();
@@ -79,6 +86,15 @@ export class GuarderiaPage {
   async ingresarDiasEstadia(diasEstadia) {
     await this.inputDiasEstadia.clear();
     await this.inputDiasEstadia.sendKeys(diasEstadia);
+  }
+
+  async ingresarIdPropietarioBuscar(number) {
+    await element(by.id('idPropietarioBuscar')).clear();
+    await element(by.id('idPropietarioBuscar')).sendKeys(number);
+  }
+
+  getInputIdPropietarioBuscar() {
+    return element(by.id('reg0_idPropietario')).getText();
   }
 
   async contarProductos() {
