@@ -61,7 +61,7 @@ describe('ProductoService', () => {
       expect(solicitudes.length).toBe(1);
       expect(solicitudes).toEqual(dummyProductos);
     });
-    const req = httpMock.expectOne(apiEndpointGuarderiaConsulta+'/'+idConsulta);
+    const req = httpMock.expectOne(apiEndpointGuarderiaConsulta + '/' + idConsulta);
     expect(req.request.method).toBe('GET');
     req.flush(dummyProductos);
   });
