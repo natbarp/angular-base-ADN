@@ -17,7 +17,6 @@ const ID = 'id';
 })
 export class ListarSolicitudComponent implements OnInit {
   public listaSolicitudes: Observable<Solicitud[]>;
-  public respuestaBorrado: Observable<boolean>;
   esVisible = false;
   mostrarContenidoModal: boolean;
   existeError = false;
@@ -47,6 +46,11 @@ export class ListarSolicitudComponent implements OnInit {
           this.existeError = true;
         }
     }
+  }
+
+  buscar(){
+    const idFiltro = document.getElementById('idPropietarioBuscar') as HTMLInputElement;
+    this.listaSolicitudes = this.guarderiaService.consultar(idFiltro.value);
   }
 
   confirmarAlert(mensaje){

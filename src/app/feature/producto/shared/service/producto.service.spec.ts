@@ -52,6 +52,20 @@ describe('ProductoService', () => {
     req.flush(dummyProductos);
   });
 
+  it('#consultar -> deberia listar productos teniendo en cuenta id buscado', () => {
+    const idConsulta = '12345';
+    const dummyProductos = [
+      new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03 17:00:00', '7')
+    ];
+    service.consultar(idConsulta).subscribe(solicitudes => {
+      expect(solicitudes.length).toBe(1);
+      expect(solicitudes).toEqual(dummyProductos);
+    });
+    const req = httpMock.expectOne(apiEndpointGuarderiaConsulta+'/'+idConsulta);
+    expect(req.request.method).toBe('GET');
+    req.flush(dummyProductos);
+  });
+
   it('#guardar -> deberia crear un producto ajustando su fecha', () => {
     const solicitud = new Solicitud('1', 'Test1', '12345', 'PERRO', '2022-03-03', '7');
     service.guardar(solicitud).subscribe((respuesta) => {

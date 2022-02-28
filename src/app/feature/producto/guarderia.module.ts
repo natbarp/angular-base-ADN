@@ -11,6 +11,7 @@ import { GuarderiaService } from './shared/service/guarderia.service';
   declarations: [
     CrearSolicitudComponent,
     ListarSolicitudComponent,
+    // ListarSolicitudPropietarioComponent,
     GuarderiaComponent
   ],
   imports: [

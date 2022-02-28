@@ -1,30 +1,43 @@
 
-<h1>{{this.respuestaBorrado}}</h1>
+<div class="container container-responsive ps-5 pe-5 mt-5" >
+  <div class="row">
+    <div class="col">
+      <input class="form-control" type="number" id="idPropietarioBuscar" name="idPropietarioBuscar" placeholder="id del propietario">
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="buscar()">Buscar</button>
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+
+</div>
 <div *ngIf="(listaSolicitudes | async)?.length>0" class="container container-responsive ps-5 pe-5 mt-5">
   <table aria-label="Relacion de todas las solicitudes en el sistema"  id="tableRegistrosGuarderia" class="table table-responsive text-center">
     <thead class="table-dark">
         <tr >
-            <th id="colId">#</th>
-            <th id="colNombre">Nombre propietario</th>
-            <th id="colDocumento">Documento</th>
-            <th id="colAnimal">Tipo animal</th>
-            <th id="colFecha">Fecha ingreso</th>
-            <th id="colEstadia">Dias de estadía</th>
-            <th id="colBotones">Acción</th>
+          <th id="colId">#</th>
+          <th id="colNombre">Nombre propietario</th>
+          <th id="colDocumento">Documento</th>
+          <th id="colAnimal">Tipo animal</th>
+          <th id="colFecha">Fecha ingreso</th>
+          <th id="colEstadia">Dias de estadía</th>
+          <th id="colBotones">Acción</th>
         </tr>
     </thead>
     <tbody id="cuerpoTabla">
         <tr *ngFor="let item of listaSolicitudes | async">
-            <th scope="col">{{item.id}}</th>
-            <th scope="col">{{item.nombrePropietario}}</th>
-            <th scope="col">{{item.idPropietario}}</th>
-            <th scope="col">{{item.tipoAnimal}}</th>
-            <th scope="col">{{item.fechaIngreso}}</th>
-            <th scope="col">{{item.diasEstadia}}</th>
-            <th scope="col">
-              <button type="button" id="botonActualizarItem{{this.item.id}}" class="btn btn-warning m-1" (click)="actualizar(this.item)">Editar</button>
-              <button type="button" id="botonBorrarItem{{this.item.id}}" class="btn btn-danger" (click)="borrar(this.item.id)">Borrar</button>
-            </th>
+          <th scope="col">{{item.id}}</th>
+          <th scope="col">{{item.nombrePropietario}}</th>
+          <th scope="col">{{item.idPropietario}}</th>
+          <th scope="col">{{item.tipoAnimal}}</th>
+          <th scope="col">{{item.fechaIngreso}}</th>
+          <th scope="col">{{item.diasEstadia}}</th>
+          <th scope="col">
+            <button type="button" id="botonActualizarItem{{this.item.id}}" class="btn btn-warning m-1" (click)="actualizar(this.item)">Editar</button>
+            <button type="button" id="botonBorrarItem{{this.item.id}}" class="btn btn-danger" (click)="borrar(this.item.id)">Borrar</button>
+          </th>
         </tr>
     </tbody>
   </table>

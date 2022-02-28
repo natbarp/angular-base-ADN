@@ -11,8 +11,13 @@ export class GuarderiaService {
   public factura: Factura;
   constructor(protected http: HttpService) {}
 
-  public consultar() {
-    return this.http.doGet<Solicitud[]>(`${environment.endpoint}/listar`, this.http.optsName('consultar registros'));
+  public consultar(idPropietario?: string) {
+    if (idPropietario) {
+      return this.http.doGet<Solicitud[]>(`${environment.endpoint}/listar/` + idPropietario, this.http.optsName('consultar registros'));
+    }
+    else {
+      return this.http.doGet<Solicitud[]>(`${environment.endpoint}/listar`, this.http.optsName('consultar registros'));
+    }
   }
 
   public guardar(solicitud: Solicitud) {

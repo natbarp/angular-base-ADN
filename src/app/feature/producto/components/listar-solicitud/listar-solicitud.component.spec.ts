@@ -91,6 +91,19 @@ describe('ListarProductoComponent', () => {
     });
   });
 
+  it('#buscar -> Deberia listar solicitudes y su tamaño ser igual a 2, enviando id de busqueda', () => {
+    // arrange
+    const servicioConsultar = spyOn(guarderiaService, 'consultar').and.returnValue(
+      of(listaSolicitudes)
+    );
+    fixture.detectChanges();
+    component.buscar();
+    expect(servicioConsultar).toHaveBeenCalled();
+    component.listaSolicitudes.subscribe(resultado => {
+      expect(2).toBe(resultado.length);
+    });
+  });
+
   it(`#borrar -> Se debería llamar el método confirmarAlert, y servicio eliminar
       debería return true y el servicio consultar tambien es llamado`, fakeAsync(() => {
     // arrange
