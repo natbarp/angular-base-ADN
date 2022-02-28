@@ -82,7 +82,7 @@
           </form>
         </div>
 
-        <div class="container" *ngIf="!mostrarContenidoModal">
+        <div class="container" *ngIf="!mostrarContenidoModal" id="facturacion">
           <div *ngIf="!existeError">
             <p>Descuento: {{(factura.valor.descuento)?'SI':'NO'}}</p>
             <p>Estadía: {{factura.valor.diasEstadia}} días</p>

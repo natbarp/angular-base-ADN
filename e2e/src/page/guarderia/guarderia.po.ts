@@ -12,39 +12,37 @@ export class GuarderiaPage {
 
   private listaProductos = element.all(by.css('table.table.table-responsive.text-center tbody tr'));
 
-  async clickBotonCrearSolicitud() {
-      await this.linkCrearSolicitud.click();
+  clickBotonCrearSolicitud() {
+    this.linkCrearSolicitud.click();
   }
 
-  async clickBotonListarSolicitud() {
-      await this.linkListarSolicitud.click();
+  clickBotonListarSolicitud() {
+    this.linkListarSolicitud.click();
   }
 
   async crear() {
     await element(by.id('botonSubmit')).click();
     // Espera hasta que el modal sea visible.
     const EC = protractor.ExpectedConditions;
-    browser.wait(EC.visibilityOf(element(by.css('div.modal'))), 60000, 'timeout');
-    expect(element(by.css('div.modal')).isPresent()).toBe(true);
-  }
-
-  get modalPresente(){
+    browser.wait(EC.visibilityOf(element(by.css('div.modal'))), 3000, 'timeout');
     return element(by.css('div.modal')).isPresent();
   }
+
   // objeto para capturar todos los getters
+  // get modalPresente(){
+  //   return element(by.css('div.modal')).isPresent();
+  // }
 
 
   async borrar() {
     let idBotonBorrar;
-    console.log((await element.all(by.css('.btn.btn-danger')).count()).valueOf());
+    // console.log((await element.all(by.css('.btn.btn-danger')).count()).valueOf());
     await element.all(by.css('.btn.btn-danger')).then((botones) => {
       idBotonBorrar = botones[0];
       botones[0].click();
-      // switcheo y enfoco a la alert, para luego aceptar
-      browser.switchTo().alert().accept();
+      browser.switchTo().alert().accept();  // switcheo y enfoco a la alert, para luego aceptar
     });
-    expect(element(by.id('\'' + idBotonBorrar.getId() + '\'')).isPresent()).toBe(false);
-    console.log((await element.all(by.css('.btn.btn-danger')).count()).valueOf());
+    return element(by.id('\'' + idBotonBorrar.getId() + '\'')).isPresent();
   }
 
   async ejecutarActualizacion() {
@@ -56,9 +54,7 @@ export class GuarderiaPage {
 
   async actualizar() {
     await element(by.id('botonSubmit')).click();
-    // const EC = protractor.ExpectedConditions;
-    // browser.wait(EC.visibilityOf(element(by.id('formActualizar'))), 60000, 'timeout');
-    expect(element(by.id('facturacion')).isPresent()).toBe(true);
+    return element(by.id('facturacion')).isPresent();
   }
 
   async ingresarNombrePropietario(nombrePropietario) {
@@ -85,7 +81,7 @@ export class GuarderiaPage {
     await this.inputDiasEstadia.sendKeys(diasEstadia);
   }
 
-    async contarProductos() {
-        return this.listaProductos.count();
-    }
+  async contarProductos() {
+      return this.listaProductos.count();
+  }
 }
